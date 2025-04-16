@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>for youuuuu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background 0.5s;
+    }
+    .background {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, #ffd1dc, #ffe6f0, #fce1e4, #ffe0f7);
+      background-size: 400% 400%;
+      animation: moveBg 15s ease infinite;
+      z-index: -2;
+    }
+    @keyframes moveBg {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .top-buttons {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      gap: 15px;
+      animation: slideDown 1s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    .top-buttons button {
+      background-color: #ffb6c1;
+      color: white;
+      border: 2px solid #fff;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .top-buttons button:hover {
+      background-color: #ff69b4;
+      transform: scale(1.1) rotate(-2deg);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .slide-box {
+      background: rgba(255, 255, 255, 0.85);
+      border: 3px dashed #ff69b4;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      max-width: 80%;
+      min-height: 150px;
+      font-size: 1.5rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      z-index: 1;
+      transition: all 0.5s ease;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      z-index: 1;
+    }
+
+    button {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background-color: #ff1493;
+    }
+
+    .sticker {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 120px;
+      animation: float 4s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .heart {
+      position: fixed;
+      top: -30px;
+      font-size: 30px;
+      animation: fall linear;
+      color: #ff4d88;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: white;
+      border: 2px solid #ff69b4;
+      padding: 30px;
+      border-radius: 15px;
+      z-index: 99;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    .popup.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup button {
+      margin-top: 20px;
+    }
+
+    .watermark {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.2);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .dark-mode .background {
+      background: linear-gradient(-45deg, #2b2b2b, #444, #555, #333);
+    }
+
+    .dark-mode .slide-box {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 2px dashed #ff69b4;
+    }
+
+    .dark-mode .watermark {
+      color: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+
+  <div class="top-buttons">
+    <button onclick="playWithSound()">putar laguu</button>
+    <button onclick="toggleDarkMode(); playPop()">klik mode malam yaa</button>
+  </div>
+
+  <audio id="bgMusic" autoplay loop>
+    <source src="lagu-kamu.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="popSound" src="https://www.myinstants.com/media/sounds/pop-up-off.mp3"></audio>
+
+  <div class="slide-box" id="slideText">"akuu suka kamu kayak kode suka bug, susah tapi nggak bisa ninggalin."</div>
+
+  <div class="buttons">
+    <button onclick="prevSlide()">Sebelumnya</button>
+    <button onclick="nextSlide()">Selanjutnya</button>
+  </div>
+
+  <img class="sticker" src="stiker-kamu.gif" alt="stiker lucu" />
+  <img class="stiker" src="stiker-kamu2.gif" alt="stiker lucu" />
+
+  <div class="popup" id="popup">
+    <p>Kamu lucuuu bangettt! (๑>ᴗ<๑)</p>
+    <button onclick="closePopup()">Tutup</button>
+  </div>
+
+  <div class="watermark">bakpiaa(๑˃ᴗ˂)ﻭ </div>
+
+  <script>
+    const slides = [
+      "aku suka kamu kayak kode suka bug, susah tapi nggak bisa ninggalin.",
+      "kalo kamu jadi kode, aku compile kamu tiap hari di hati.",
+      "tanpa kamu, hatiku 404 not found.",
+      "cintaku ke kamu tuh kayak loop while(true) — nggak bakal berhenti.",
+      "kamu satu-satunya const yang nggak mau aku ubah jadi let.",
+      "mau kamu jadi error pun, aku tetep debug kamu sampe berhasil.",
+      "kamuu itu class paling penting di program hidup aku.",
+      "senyummu tuh bikin semua if else di hatiku langsung true.",
+    ];
+
+    let index = 0;
+    const slideText = document.getElementById("slideText");
+
+    function typeEffect(text, i = 0) {
+      slideText.textContent = "";
+      let interval = setInterval(() => {
+        slideText.textContent += text[i];
+        i++;
+        if (i >= text.length) clearInterval(interval);
+      }, 50);
+    }
+
+    function showSlide() {
+      typeEffect(slides[index]);
+    }
+
+    function nextSlide() {
+      index = (index + 1) % slides.length;
+      showSlide();
+      confetti();
+      if (index === 4) showPopup();
+    }
+
+    function prevSlide() {
+      index = (index - 1 + slides.length) % slides.length;
+      showSlide();
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") nextSlide();
+      if (e.key === "ArrowLeft") prevSlide();
+    });
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      const emotes = ["❤", "💗", "💐", "💕", "✨"];
+      heart.innerHTML = emotes[Math.floor(Math.random() * emotes.length)];
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+      heart.style.fontSize = (20 + Math.random() * 25) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+
+    function showPopup() {
+      document.getElementById("popup").classList.add("show");
+    }
+
+    function closePopup() {
+      document.getElementById("popup").classList.remove("show");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function playWithSound() {
+      document.getElementById("bgMusic").play();
+      playPop();
+    }
+
+    function playPop() {
+      const sound = document.getElementById("popSound");
+      sound.currentTime = 0;
+      sound.play();
+    }
+
+    showSlide();
+  </script>
+</body>
+</html>
